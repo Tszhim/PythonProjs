@@ -11,15 +11,19 @@ class Alarm():
         # root config
         self.root = Tk()
         self.root.title("Alarms")
+        self.root.configure(bg="#2978b5")
+        self.root.resizable(False, False)
 
         # greeting label
         self.greetingFont = tkinter.font.Font(family="Helvetica", size=13)
         self.label_greeting = Label(self.root, text="", font=self.greetingFont)
+        self.label_greeting.configure(bg="#2978b5")
         self.label_greeting.pack()
         self.update_greeting()
 
         # add_alarm button
         self.add_alarm = Button(self.root, text="+ Add an alarm", command=self.prompt_alarmInfo)
+        self.add_alarm.configure(bg="#8ab6d6")
         self.add_alarm.pack()
 
         self.root.mainloop()
@@ -29,15 +33,15 @@ class Alarm():
         curr_time = datetime.now()
         curr = curr_time.strftime("%H:%M:%S %p")
         if 0 < curr_time.hour < 12:
-            curr = "Good Morning: " + curr
+            curr = "    Good Morning: " + curr + "    "
         elif 12 <= curr_time.hour < 16:
-            curr = "Good Afternoon: " + curr
+            curr = "    Good Afternoon: " + curr + "    "
         elif 16 <= curr_time.hour < 21:
-            curr = "Good Evening: " + curr
+            curr = "    Good Evening: " + curr + "    "
         elif 21 <= curr_time.hour < 24:
-            curr = "Good Night: " + curr
+            curr = "    Good Night: " + curr + "    "
         else:
-            curr = "It is currently " + curr
+            curr = "    It is currently " + curr + "    "
 
         self.label_greeting.configure(text=curr)
         self.root.after(1000, self.update_greeting)
@@ -122,6 +126,7 @@ class Alarm():
     def prompt_alarmInfo(self):
         input_window = Toplevel(self.root)
         label_instruct = Label(input_window, text="Set Alarm Time:")
+        self.root.resizable(False, False)
 
         timeFont = tkinter.font.Font(family="Helvetica", size=10)
         label_hour = Label(input_window, text="12", font=timeFont)
@@ -138,6 +143,22 @@ class Alarm():
         button_PMtoAM = Button(input_window, text="AM", font=timeFont, command=lambda: self.AMPM(label_AMPM, "AM"))
         button_set = Button(input_window, text="Set", font=timeFont, command=lambda: self.set(input_window, label_hour, label_minute, label_AMPM))
 
+        input_window.configure(bg="#ffa62b")
+        label_instruct.configure(bg="#ffa62b")
+        label_hour.configure(bg="#ffa62b")
+        label_colon.configure(bg="#ffa62b")
+        label_minute.configure(bg="#ffa62b")
+        label_AMPM.configure(bg="#ffa62b")
+        label_fill.configure(bg="#ffa62b")
+        label_hour.configure(bg="#ffa62b")
+        button_hour_add.configure(bg="#ffda77")
+        button_hour_subtract.configure(bg="#ffda77")
+        button_minute_add.configure(bg="#ffda77")
+        button_minute_subtract.configure(bg="#ffda77")
+        button_AMtoPM.configure(bg="#ffda77")
+        button_PMtoAM.configure(bg="#ffda77")
+        button_set.configure(bg="#ffda77")
+        
         label_instruct.grid(row=0, column=2)
         button_hour_add.grid(row=1, column=0)
         button_minute_add.grid(row=1, column=2)
