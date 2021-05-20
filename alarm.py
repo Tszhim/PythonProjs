@@ -6,7 +6,7 @@ from datetime import datetime
 from playsound import playsound
 
 
-class Alarm():
+class alarm():
     def __init__(self):
         # root config
         self.root = Tk()
