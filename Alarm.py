@@ -23,7 +23,8 @@ class Alarm():
         self.add_alarm.pack()
 
         self.root.mainloop()
-
+    
+    #Maintains greeting label. 
     def update_greeting(self):
         curr_time = datetime.now()
         curr = curr_time.strftime("%H:%M:%S %p")
@@ -41,6 +42,7 @@ class Alarm():
         self.label_greeting.configure(text=curr)
         self.root.after(1000, self.update_greeting)
 
+    #Altering label after user input.
     def add_hr(self, label_hour):
         curr = label_hour["text"]
         if curr == "12":
@@ -49,6 +51,7 @@ class Alarm():
             new_curr = str(int(curr) + 1)
             label_hour["text"] = new_curr
 
+    #Altering label after user input.
     def subtract_hr(self, label_hour):
         curr = label_hour["text"]
         if curr == "1":
@@ -56,7 +59,8 @@ class Alarm():
         else:
             new_curr = str(int(curr) - 1)
             label_hour["text"] = new_curr
-
+    
+    #Altering label after user input.
     def add_min(self, label_minute):
         curr = label_minute["text"]
         if curr[0] == "0":
@@ -72,7 +76,8 @@ class Alarm():
                 label_minute["text"] = "0" + new_curr_str
             else:
                 label_minute["text"] = new_curr_str
-
+    
+    #Altering label after user input.
     def subtract_min(self, label_minute):
         curr = label_minute["text"]
         if curr[0] == "0":
@@ -88,12 +93,14 @@ class Alarm():
             else:
                 label_minute["text"] = new_curr_str
 
+    #Altering label after user input.
     def AMPM(self, label_AMPM, input):
         if input == "AM":
             label_AMPM["text"] = "AM"
         else:
             label_AMPM["text"] = "PM"
 
+    #Passes final user input to create alarm.
     def set(self, input_window, label_hour, label_minute, label_AMPM):
         hr = label_hour["text"]
         minute = label_minute["text"]
@@ -110,7 +117,8 @@ class Alarm():
         input_window.destroy()
 
         self.prompt_alarm(concat)
-
+    
+    #Creating interface for user input.
     def prompt_alarmInfo(self):
         input_window = Toplevel(self.root)
         label_instruct = Label(input_window, text="Set Alarm Time:")
@@ -145,11 +153,13 @@ class Alarm():
         button_AMtoPM.grid(row=3, column=3)
 
         self.root.mainloop()
-
+    
+    #Creates another thread to run alarm checking in background.
     def prompt_alarm(self, concat):
         alarm_thread = threading.Thread(target=self.make_alarm, args=(concat,))
         alarm_thread.start()
-
+    
+    #Checks if alarm should activate.
     def make_alarm(self, alarm_time):
         while True:
             curr_time = datetime.now().strftime("%H:%M")
