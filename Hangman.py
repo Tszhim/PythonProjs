@@ -2,6 +2,7 @@ import pygame
 import math
 from random_words import RandomWords
 
+# Setting up game window.
 pygame.init()
 frame_width = 1100
 frame_height = 700
@@ -10,11 +11,22 @@ icon = pygame.image.load('32x32switch.png')
 pygame.display.set_caption("Hangman")
 pygame.display.set_icon(icon)
 
+# Setting game clock.
+fps = 60
+timer = pygame.time.Clock()
+cont = True
+
+# Preparing images for hangman.
 person_img = []
 for i in range(11):
     person_img.append(pygame.image.load(str(i) + ".jpg"))
 person_step = [0]
 
+# Storing player guesses.
+guessed_letters = []
+guess_text_start = [500, 350]
+
+# Preparing alphabet buttons for user input.
 button_rad = 21
 empty_fill = 40
 alphabet = []
@@ -40,11 +52,8 @@ for i in range(26):
         letter = letter + 1
         alphabet.append([start_x, m_zY, chr(letter), False])
 
-fps = 60
-timer = pygame.time.Clock()
-cont = True
 
-
+# Using external module to generate random word.
 def generate_word():
     letter_list = []
     rec_start = 250
@@ -58,6 +67,7 @@ def generate_word():
             return letter_list
 
 
+# Generating word for game.
 game_word = generate_word()
 font_lines = pygame.font.SysFont("Helvetica", 25)
 print(game_word)
@@ -69,25 +79,45 @@ def distance(x1, x2, y1, y2):
 
 def draw():
     frame.blit(pygame.image.load("back_img.jpg"), (0, 0))
+
+    # Drawing buttons.
     for button in alphabet:
         x, y, let, pressed = button
         pygame.draw.circle(frame, (204, 242, 244), (x, y), button_rad, 100)
-        render = font.render(let, 1, (18, 110, 130))
+        render = font.render(let, 1, (0, 0, 0))
         frame.blit(render, (x - render.get_width() / 2, y - render.get_height() / 2))
+
+        # Showing correct guesses on top of black rectangles.
         if pressed:
+            if let not in guessed_letters:
+                guessed_letters.append(let)
             exists = False
             for game_word_letter in game_word:
                 game_letter, picked, x_loc = game_word_letter
                 if let == game_letter:
-                    render = font_lines.render(let, 1, (18, 110, 130))
+                    render = font_lines.render(let, 1, (0, 0, 0))
                     frame.blit(render, (x_loc + 15, 260))
                     game_word_letter[1] = True
                     exists = True
             if not exists:
                 button[3] = False
-                print(person_step[0])
                 person_step[0] = person_step[0] + 1
 
+    # Showing all guesses.
+    render = font_lines.render("Guessed letters:", 1, (0, 0, 0))
+    frame.blit(render, (325, guess_text_start[1]))
+    for guess in guessed_letters:
+        render = font_lines.render(guess, 1, (0, 0, 0))
+        if guess_text_start[0] > 1000:
+            guess_text_start[0] = 500
+            guess_text_start[1] = 420
+        frame.blit(render, (guess_text_start[0], guess_text_start[1]))
+        guess_text_start[0] = guess_text_start[0] + 50
+
+    guess_text_start[0] = 500
+    guess_text_start[1] = 380
+
+    # Black rectangles to hold correctly guessed letters.
     for game_word_letter in game_word:
         game_letter, picked, x_loc = game_word_letter
         pygame.draw.rect(frame, (0, 0, 0), (x_loc, 300, 50, 10))
@@ -96,10 +126,13 @@ def draw():
     pygame.display.update()
 
 
+# Small click effect.
 def button_press(loc_x, loc_y):
     pygame.draw.circle(frame, (0, 0, 0), (loc_x, loc_y), button_rad, 5)
     pygame.display.update()
 
+
+# Exit game when hangman is complete, or word is completely guessed.
 def exit_game():
     if person_step[0] > 9:
         return True
@@ -114,11 +147,15 @@ def exit_game():
 
 
 while cont:
+    # Player wins.
     if exit_game():
         break
 
+    # Setting up window.
     timer.tick(fps)
     draw()
+
+    # Checking for events.
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             cont = False
@@ -129,6 +166,5 @@ while cont:
                 if distance(in_x, x, in_y, y) < button_rad:
                     button_press(x, y)
                     button[3] = True
-
 
 pygame.quit()
