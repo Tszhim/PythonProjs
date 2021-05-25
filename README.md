@@ -11,6 +11,8 @@ Pong: Functional, could have better logic.
 
 States Quiz: Functional, could include multi-threading for timer.
 
-MilesToKilometers: Quick test of tkinter.
+Miles To Kilometers: Quick test of tkinter.
 
-PomodoroTimer: Functional, finished.
+Pomodoro Timer: Functional, finished.
+
+Language Flash Cards: Functional, finished.
