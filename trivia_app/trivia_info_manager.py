@@ -11,10 +11,6 @@ class TriviaInfoManager:
         self.player_score = 0
         self.question_bank_index = 0
         self.question_bank = question_bank
-        for question in question_bank:
-            print(question.question_text)
-            print(question.answer_text)
-
         self.current_question = None
         self.current_screen_text = ""
 
